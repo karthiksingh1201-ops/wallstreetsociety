@@ -1,199 +1,784 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Wall Street Society</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet"/>
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Inter:wght@400;500&display=swap');
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
-    * { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --gold: #c9a84c;
+      --gold-light: #e8c96a;
+      --bg: #080808;
+      --bg2: #0f0f0f;
+      --bg3: #161616;
+      --border: #1e1e1e;
+      --text: #e8e2d0;
+      --muted: #6a6050;
+      --serif: 'Playfair Display', serif;
+      --sans: 'Inter', sans-serif;
+    }
+
+    html { scroll-behavior: smooth; }
 
     body {
-      background: #0a0a0a;
-      color: #e8e2d0;
-      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--sans);
+      line-height: 1.6;
+    }
+
+    /* ── NAVBAR ── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 48px;
+      height: 64px;
+      background: rgba(8,8,8,0.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+    }
+
+    /* ── REPLACE: swap src with your actual logo image ── */
+    .nav-logo img {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 1px solid var(--gold);
+    }
+
+    .nav-logo-placeholder {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      border: 1px solid var(--gold);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--serif);
+      font-size: 14px;
+      color: var(--gold);
+      background: var(--bg2);
+    }
+
+    .nav-logo span {
+      font-family: var(--serif);
+      font-size: 1rem;
+      color: var(--text);
+      letter-spacing: 0.04em;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 36px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 13px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover { color: var(--gold); }
+
+    .nav-cta {
+      padding: 8px 20px;
+      border: 1px solid var(--gold);
+      color: var(--gold) !important;
+      font-size: 12px !important;
+      letter-spacing: 0.1em !important;
+      transition: background 0.2s, color 0.2s !important;
+    }
+
+    .nav-cta:hover {
+      background: var(--gold) !important;
+      color: var(--bg) !important;
+    }
+
+    /* hamburger for mobile */
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+      background: none;
+      border: none;
+    }
+    .hamburger span {
+      display: block;
+      width: 24px;
+      height: 1.5px;
+      background: var(--text);
+      transition: 0.3s;
+    }
+
+    /* ── HERO ── */
+    #home {
       min-height: 100vh;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
       text-align: center;
-      padding: 40px 20px;
+      padding: 120px 24px 80px;
+      position: relative;
+      overflow: hidden;
     }
 
-    .badge {
+    #home::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse 60% 50% at 50% 60%, rgba(201,168,76,0.07) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .hero-badge {
       font-size: 11px;
-      letter-spacing: 0.18em;
+      letter-spacing: 0.2em;
       text-transform: uppercase;
-      color: #b59a5a;
-      margin-bottom: 28px;
+      color: var(--gold);
+      margin-bottom: 24px;
+      border: 1px solid rgba(201,168,76,0.3);
+      padding: 6px 16px;
+      display: inline-block;
     }
 
-    h1 {
-      font-family: 'Playfair Display', serif;
-      font-size: clamp(2.4rem, 7vw, 5rem);
-      line-height: 1.08;
+    .hero-title {
+      font-family: var(--serif);
+      font-size: clamp(3rem, 8vw, 6rem);
+      line-height: 1.05;
       color: #f0e9d6;
-      margin-bottom: 12px;
+      margin-bottom: 24px;
     }
 
-    h1 span { color: #c9a84c; }
+    .hero-title span { color: var(--gold); }
 
-    .tagline {
-      font-size: 1rem;
-      color: #8a8070;
-      max-width: 420px;
-      line-height: 1.7;
-      margin: 0 auto 52px;
+    .hero-sub {
+      font-size: 1.05rem;
+      color: var(--muted);
+      max-width: 480px;
+      margin: 0 auto 48px;
     }
 
-    /* Bull & Bear SVG row */
-    .animals {
+    .hero-actions {
       display: flex;
-      align-items: flex-end;
+      gap: 16px;
       justify-content: center;
-      gap: 48px;
-      margin-bottom: 52px;
+      flex-wrap: wrap;
     }
 
-    .animal-block { display: flex; flex-direction: column; align-items: center; gap: 10px; }
+    .btn-primary {
+      padding: 13px 32px;
+      background: var(--gold);
+      color: var(--bg);
+      font-size: 13px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      text-decoration: none;
+      font-weight: 600;
+      transition: background 0.2s;
+    }
+    .btn-primary:hover { background: var(--gold-light); }
 
-    .animal-label {
+    .btn-outline {
+      padding: 13px 32px;
+      border: 1px solid var(--border);
+      color: var(--muted);
+      font-size: 13px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      text-decoration: none;
+      transition: border-color 0.2s, color 0.2s;
+    }
+    .btn-outline:hover { border-color: var(--gold); color: var(--gold); }
+
+    .hero-stats {
+      display: flex;
+      gap: 64px;
+      margin-top: 80px;
+      padding-top: 40px;
+      border-top: 1px solid var(--border);
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .stat { text-align: center; }
+    .stat-num {
+      font-family: var(--serif);
+      font-size: 2.2rem;
+      color: var(--gold);
+      display: block;
+    }
+    .stat-label {
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-top: 4px;
+    }
+
+    /* ── SECTION SHARED ── */
+    section { padding: 100px 48px; }
+
+    .section-eyebrow {
+      font-size: 11px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 16px;
+    }
+
+    .section-title {
+      font-family: var(--serif);
+      font-size: clamp(1.8rem, 4vw, 2.8rem);
+      color: #f0e9d6;
+      margin-bottom: 16px;
+    }
+
+    .section-sub {
+      color: var(--muted);
+      max-width: 520px;
+      margin-bottom: 56px;
+      font-size: 0.95rem;
+    }
+
+    /* ── RESEARCH ── */
+    #research { background: var(--bg2); }
+
+    .research-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+    }
+
+    .paper-card {
+      background: var(--bg2);
+      padding: 36px;
+      transition: background 0.2s;
+      cursor: pointer;
+      text-decoration: none;
+      display: block;
+      color: inherit;
+    }
+
+    .paper-card:hover { background: var(--bg3); }
+
+    .paper-tag {
       font-size: 10px;
       letter-spacing: 0.14em;
       text-transform: uppercase;
-      color: #6a6050;
+      color: var(--gold);
+      margin-bottom: 16px;
     }
 
-    /* Stats row */
-    .stats {
+    .paper-title {
+      font-family: var(--serif);
+      font-size: 1.15rem;
+      color: #f0e9d6;
+      margin-bottom: 12px;
+      line-height: 1.4;
+    }
+
+    .paper-abstract {
+      font-size: 0.88rem;
+      color: var(--muted);
+      line-height: 1.7;
+      margin-bottom: 24px;
+    }
+
+    .paper-meta {
       display: flex;
-      gap: 48px;
-      justify-content: center;
-      flex-wrap: wrap;
-      border-top: 1px solid #1e1e1e;
-      padding-top: 36px;
-      margin-top: 8px;
-      width: 100%;
-      max-width: 560px;
+      align-items: center;
+      justify-content: space-between;
+      border-top: 1px solid var(--border);
+      padding-top: 16px;
+      font-size: 12px;
+      color: var(--muted);
     }
 
-    .stat { display: flex; flex-direction: column; gap: 4px; }
-    .stat-num { font-family: 'Playfair Display', serif; font-size: 1.8rem; color: #c9a84c; }
-    .stat-desc { font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: #5a5448; }
+    .paper-author { display: flex; align-items: center; gap: 8px; }
 
-    .cta {
-      margin-top: 36px;
-      padding: 12px 32px;
-      border: 1px solid #c9a84c;
-      color: #c9a84c;
-      font-size: 13px;
+    /* ── REPLACE: author avatar images ── */
+    .author-avatar {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 1px solid var(--border);
+    }
+
+    .author-avatar-placeholder {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 10px;
+      color: var(--gold);
+      font-weight: 600;
+      flex-shrink: 0;
+    }
+
+    .paper-arrow {
+      color: var(--gold);
+      font-size: 18px;
+      transition: transform 0.2s;
+    }
+    .paper-card:hover .paper-arrow { transform: translateX(4px); }
+
+    /* ── TEAM ── */
+    #team { background: var(--bg); }
+
+    .team-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 2px;
+      background: var(--border);
+      border: 1px solid var(--border);
+    }
+
+    .member-card {
+      background: var(--bg);
+      padding: 36px 28px;
+      text-align: center;
+      transition: background 0.2s;
+    }
+    .member-card:hover { background: var(--bg2); }
+
+    /* ── REPLACE: swap .member-img src with actual photo path ── */
+    .member-img {
+      width: 88px;
+      height: 88px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid var(--border);
+      margin: 0 auto 20px;
+      display: block;
+      transition: border-color 0.2s;
+    }
+    .member-card:hover .member-img { border-color: var(--gold); }
+
+    .member-img-placeholder {
+      width: 88px;
+      height: 88px;
+      border-radius: 50%;
+      background: var(--bg3);
+      border: 2px solid var(--border);
+      margin: 0 auto 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--serif);
+      font-size: 1.6rem;
+      color: var(--gold);
+      transition: border-color 0.2s;
+    }
+    .member-card:hover .member-img-placeholder { border-color: var(--gold); }
+
+    .member-name {
+      font-family: var(--serif);
+      font-size: 1.1rem;
+      color: #f0e9d6;
+      margin-bottom: 4px;
+    }
+
+    .member-role {
+      font-size: 11px;
       letter-spacing: 0.12em;
       text-transform: uppercase;
-      background: transparent;
-      cursor: pointer;
-      transition: background 0.2s, color 0.2s;
-      text-decoration: none;
-      display: inline-block;
+      color: var(--gold);
+      margin-bottom: 12px;
     }
-    .cta:hover { background: #c9a84c; color: #0a0a0a; }
+
+    .member-bio {
+      font-size: 0.83rem;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .member-links {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      margin-top: 16px;
+    }
+
+    .member-links a {
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .member-links a:hover { color: var(--gold); }
+
+    /* president highlight */
+    .member-card.president {
+      background: var(--bg2);
+      border-bottom: 2px solid var(--gold);
+    }
+
+    /* ── ABOUT ── */
+    #about {
+      background: var(--bg2);
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: center;
+    }
+
+    .about-text .section-sub { margin-bottom: 32px; }
+
+    .about-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .about-list li {
+      display: flex;
+      gap: 14px;
+      font-size: 0.9rem;
+      color: var(--muted);
+    }
+
+    .about-list li::before {
+      content: '—';
+      color: var(--gold);
+      flex-shrink: 0;
+    }
+
+    .about-visual {
+      border: 1px solid var(--border);
+      padding: 40px;
+      text-align: center;
+    }
+
+    .about-quote {
+      font-family: var(--serif);
+      font-size: 1.4rem;
+      color: #f0e9d6;
+      line-height: 1.5;
+      margin-bottom: 20px;
+    }
+
+    .about-quote-attr {
+      font-size: 12px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    /* ── CONTACT ── */
+    #contact {
+      background: var(--bg);
+      text-align: center;
+    }
+
+    #contact .section-sub { margin: 0 auto 40px; }
+
+    .contact-email {
+      font-family: var(--serif);
+      font-size: 1.6rem;
+      color: var(--gold);
+      text-decoration: none;
+      display: block;
+      margin-bottom: 40px;
+      transition: color 0.2s;
+    }
+    .contact-email:hover { color: var(--gold-light); }
+
+    /* ── FOOTER ── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 32px 48px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 12px;
+      color: var(--muted);
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 768px) {
+      nav { padding: 0 24px; }
+      .nav-links { display: none; flex-direction: column; position: absolute; top: 64px; left: 0; right: 0; background: var(--bg); border-bottom: 1px solid var(--border); padding: 24px; gap: 20px; }
+      .nav-links.open { display: flex; }
+      .hamburger { display: flex; }
+      section { padding: 72px 24px; }
+      #about { grid-template-columns: 1fr; gap: 40px; }
+      .about-visual { display: none; }
+      footer { flex-direction: column; text-align: center; }
+    }
   </style>
 </head>
 <body>
 
-  <p class="badge">Est. 2025 &nbsp;·&nbsp; Finance Club</p>
+<!-- ══ NAVBAR ══ -->
+<nav>
+  <a class="nav-logo" href="#home">
+    <!--
+      TO ADD YOUR LOGO:
+      Replace the placeholder div below with:
+      <img src="images/logo.png" alt="WSS Logo"/>
+      and put your logo file in the images/ folder
+    -->
+    <div class="nav-logo-placeholder">W</div>
+    <span>Wall Street Society</span>
+  </a>
 
-  <h1>Wall Street<br/><span>Society</span></h1>
+  <ul class="nav-links" id="nav-links">
+    <li><a href="#home">Home</a></li>
+    <li><a href="#research">Research</a></li>
+    <li><a href="#team">Team</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="#contact" class="nav-cta">Join Us</a></li>
+  </ul>
 
-  <p class="tagline">
-    Where markets meet minds. We study, debate, and decode
-    the forces that move capital around the world.
-  </p>
+  <button class="hamburger" onclick="document.getElementById('nav-links').classList.toggle('open')" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
 
-  <!-- Bull & Bear SVGs -->
-  <div class="animals">
 
-    <!-- BULL -->
-    <div class="animal-block">
-      <svg width="110" height="110" viewBox="0 0 110 110" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <!-- Body -->
-        <ellipse cx="55" cy="68" rx="32" ry="22" fill="#1a3a1a" stroke="#2d6e2d" stroke-width="1.5"/>
-        <!-- Head -->
-        <ellipse cx="82" cy="52" rx="18" ry="15" fill="#1a3a1a" stroke="#2d6e2d" stroke-width="1.5"/>
-        <!-- Horns -->
-        <path d="M76 40 Q68 22 60 26" stroke="#c9a84c" stroke-width="2.5" stroke-linecap="round" fill="none"/>
-        <path d="M88 40 Q96 22 102 28" stroke="#c9a84c" stroke-width="2.5" stroke-linecap="round" fill="none"/>
-        <!-- Eye -->
-        <circle cx="88" cy="48" r="2.5" fill="#c9a84c"/>
-        <!-- Nose -->
-        <ellipse cx="97" cy="55" rx="5" ry="3.5" fill="#2d6e2d"/>
-        <!-- Legs -->
-        <line x1="34" y1="88" x2="30" y2="108" stroke="#2d6e2d" stroke-width="5" stroke-linecap="round"/>
-        <line x1="46" y1="89" x2="44" y2="108" stroke="#2d6e2d" stroke-width="5" stroke-linecap="round"/>
-        <line x1="64" y1="89" x2="62" y2="108" stroke="#2d6e2d" stroke-width="5" stroke-linecap="round"/>
-        <line x1="76" y1="88" x2="78" y2="108" stroke="#2d6e2d" stroke-width="5" stroke-linecap="round"/>
-        <!-- Tail -->
-        <path d="M24 65 Q14 60 18 52" stroke="#2d6e2d" stroke-width="2" stroke-linecap="round" fill="none"/>
-        <!-- Arrow up (bullish) -->
-        <path d="M50 18 L55 8 L60 18" fill="#2d6e2d"/>
-        <line x1="55" y1="8" x2="55" y2="28" stroke="#2d6e2d" stroke-width="2"/>
-      </svg>
-      <span class="animal-label">Bull Market</span>
+<!-- ══ HERO ══ -->
+<section id="home">
+  <span class="hero-badge">Finance Club &nbsp;·&nbsp; Est. 2025</span>
+  <h1 class="hero-title">Wall Street<br/><span>Society</span></h1>
+  <p class="hero-sub">Where markets meet minds. We research, debate, and decode the forces that move capital around the world.</p>
+  <div class="hero-actions">
+    <a href="#research" class="btn-primary">Read Research</a>
+    <a href="#team" class="btn-outline">Meet the Team</a>
+  </div>
+  <div class="hero-stats">
+    <div class="stat"><span class="stat-num">100+</span><span class="stat-label">Members</span></div>
+    <div class="stat"><span class="stat-num">12</span><span class="stat-label">Papers Published</span></div>
+    <div class="stat"><span class="stat-num">20+</span><span class="stat-label">Events / Year</span></div>
+  </div>
+</section>
+
+
+<!-- ══ RESEARCH ══ -->
+<section id="research">
+  <p class="section-eyebrow">Research</p>
+  <h2 class="section-title">Papers by our members</h2>
+  <p class="section-sub">Original research and analysis written by Wall Street Society members — from equity deep-dives to macroeconomic commentary.</p>
+
+  <div class="research-grid">
+
+    <!-- PAPER 1 — REPLACE title, abstract, author, date, and href with your PDF link -->
+    <a class="paper-card" href="papers/paper1.pdf" target="_blank">
+      <p class="paper-tag">Equity Research</p>
+      <h3 class="paper-title">The Reliance Industries Thesis: A Bottom-Up Analysis</h3>
+      <p class="paper-abstract">A comprehensive valuation of RIL's Jio and retail segments using DCF and comparable company analysis, arguing the market underprices its digital optionality.</p>
+      <div class="paper-meta">
+        <div class="paper-author">
+          <!--
+            REPLACE: put author photo in images/ folder and update src
+            <img class="author-avatar" src="images/author1.jpg" alt="Arjun Shah"/>
+          -->
+          <div class="author-avatar-placeholder">AS</div>
+          <span>Arjun Shah &nbsp;·&nbsp; Jan 2025</span>
+        </div>
+        <span class="paper-arrow">→</span>
+      </div>
+    </a>
+
+    <!-- PAPER 2 -->
+    <a class="paper-card" href="papers/paper2.pdf" target="_blank">
+      <p class="paper-tag">Macroeconomics</p>
+      <h3 class="paper-title">RBI's Rate Dilemma: Inflation vs. Growth in 2025</h3>
+      <p class="paper-abstract">Examining the Reserve Bank of India's tightening cycle and its downstream effects on credit growth, currency stability, and the broader Indian equity market.</p>
+      <div class="paper-meta">
+        <div class="paper-author">
+          <div class="author-avatar-placeholder">PR</div>
+          <span>Priya Rao &nbsp;·&nbsp; Feb 2025</span>
+        </div>
+        <span class="paper-arrow">→</span>
+      </div>
+    </a>
+
+    <!-- PAPER 3 -->
+    <a class="paper-card" href="papers/paper3.pdf" target="_blank">
+      <p class="paper-tag">Sector Analysis</p>
+      <h3 class="paper-title">India's EV Supply Chain: Who Wins the Battery Race?</h3>
+      <p class="paper-abstract">A sector-level breakdown of India's emerging EV ecosystem — identifying the upstream winners in lithium processing, cell manufacturing, and charging infrastructure.</p>
+      <div class="paper-meta">
+        <div class="paper-author">
+          <div class="author-avatar-placeholder">KM</div>
+          <span>Karthik Menon &nbsp;·&nbsp; Mar 2025</span>
+        </div>
+        <span class="paper-arrow">→</span>
+      </div>
+    </a>
+
+    <!-- PAPER 4 -->
+    <a class="paper-card" href="papers/paper4.pdf" target="_blank">
+      <p class="paper-tag">Global Markets</p>
+      <h3 class="paper-title">Dollar Dominance Under Pressure: A BRICS Currency Analysis</h3>
+      <p class="paper-abstract">Assessing the structural feasibility of a BRICS reserve currency and what de-dollarisation would mean for emerging market capital flows and Indian exports.</p>
+      <div class="paper-meta">
+        <div class="paper-author">
+          <div class="author-avatar-placeholder">SN</div>
+          <span>Sneha Nair &nbsp;·&nbsp; Apr 2025</span>
+        </div>
+        <span class="paper-arrow">→</span>
+      </div>
+    </a>
+
+  </div>
+</section>
+
+
+<!-- ══ TEAM ══ -->
+<section id="team">
+  <p class="section-eyebrow">The Team</p>
+  <h2 class="section-title">People behind the Society</h2>
+  <p class="section-sub">Our core team drives research, events, and the intellectual culture of Wall Street Society.</p>
+
+  <div class="team-grid">
+
+    <!-- PRESIDENT — highlighted card -->
+    <!-- REPLACE: name, role, bio, image, and LinkedIn -->
+    <div class="member-card president">
+      <!--
+        TO ADD PHOTO:
+        Replace the placeholder div with:
+        <img class="member-img" src="images/president.jpg" alt="Name"/>
+      -->
+      <div class="member-img-placeholder">KS</div>
+      <p class="member-role">President</p>
+      <h3 class="member-name">Karthik Singh</h3>
+      <p class="member-bio">Final year B.Com student. Passionate about equity research and building a research culture on campus.</p>
+      <div class="member-links">
+        <a href="https://linkedin.com" target="_blank">LinkedIn ↗</a>
+      </div>
     </div>
 
-    <!-- DIVIDER -->
-    <div style="width:1px; height:80px; background:#1e1e1e; align-self:center;"></div>
+    <!-- VICE PRESIDENT -->
+    <div class="member-card">
+      <div class="member-img-placeholder">RP</div>
+      <p class="member-role">Vice President</p>
+      <h3 class="member-name">Riya Patel</h3>
+      <p class="member-bio">Interested in macroeconomics and financial modelling. Leads the club's speaker series.</p>
+      <div class="member-links">
+        <a href="https://linkedin.com" target="_blank">LinkedIn ↗</a>
+      </div>
+    </div>
 
-    <!-- BEAR -->
-    <div class="animal-block">
-      <svg width="110" height="110" viewBox="0 0 110 110" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <!-- Body -->
-        <ellipse cx="55" cy="70" rx="30" ry="24" fill="#2a1a1a" stroke="#6e2d2d" stroke-width="1.5"/>
-        <!-- Head -->
-        <circle cx="30" cy="54" r="19" fill="#2a1a1a" stroke="#6e2d2d" stroke-width="1.5"/>
-        <!-- Ears -->
-        <circle cx="18" cy="38" r="7" fill="#2a1a1a" stroke="#6e2d2d" stroke-width="1.5"/>
-        <circle cx="42" cy="37" r="7" fill="#2a1a1a" stroke="#6e2d2d" stroke-width="1.5"/>
-        <!-- Eye -->
-        <circle cx="22" cy="50" r="2.5" fill="#c9a84c"/>
-        <!-- Snout -->
-        <ellipse cx="14" cy="60" rx="8" ry="5" fill="#3a2222"/>
-        <circle cx="12" cy="58" r="1.5" fill="#6e2d2d"/>
-        <circle cx="16" cy="58" r="1.5" fill="#6e2d2d"/>
-        <!-- Legs -->
-        <line x1="34" y1="92" x2="30" y2="108" stroke="#6e2d2d" stroke-width="5" stroke-linecap="round"/>
-        <line x1="46" y1="93" x2="44" y2="108" stroke="#6e2d2d" stroke-width="5" stroke-linecap="round"/>
-        <line x1="64" y1="93" x2="62" y2="108" stroke="#6e2d2d" stroke-width="5" stroke-linecap="round"/>
-        <line x1="76" y1="92" x2="78" y2="108" stroke="#6e2d2d" stroke-width="5" stroke-linecap="round"/>
-        <!-- Tail -->
-        <path d="M84 68 Q96 62 92 54" stroke="#6e2d2d" stroke-width="2" stroke-linecap="round" fill="none"/>
-        <!-- Arrow down (bearish) -->
-        <path d="M60 8 L65 18 L70 8" fill="#6e2d2d"/>
-        <line x1="65" y1="18" x2="65" y2="28" stroke="#6e2d2d" stroke-width="2"/>
-      </svg>
-      <span class="animal-label">Bear Market</span>
+    <!-- HEAD OF RESEARCH -->
+    <div class="member-card">
+      <div class="member-img-placeholder">AM</div>
+      <p class="member-role">Head of Research</p>
+      <h3 class="member-name">Aryan Mehta</h3>
+      <p class="member-bio">CFA Level 1 candidate. Oversees all research publications and peer review within the club.</p>
+      <div class="member-links">
+        <a href="https://linkedin.com" target="_blank">LinkedIn ↗</a>
+      </div>
+    </div>
+
+    <!-- HEAD OF EVENTS -->
+    <div class="member-card">
+      <div class="member-img-placeholder">SV</div>
+      <p class="member-role">Head of Events</p>
+      <h3 class="member-name">Shruti Verma</h3>
+      <p class="member-bio">Organises case competitions, market simulations, and guest lectures throughout the year.</p>
+      <div class="member-links">
+        <a href="https://linkedin.com" target="_blank">LinkedIn ↗</a>
+      </div>
+    </div>
+
+    <!-- TREASURER -->
+    <div class="member-card">
+      <div class="member-img-placeholder">NK</div>
+      <p class="member-role">Treasurer</p>
+      <h3 class="member-name">Neil Kapoor</h3>
+      <p class="member-bio">Manages club finances and sponsorships. Keen interest in derivatives and options pricing.</p>
+      <div class="member-links">
+        <a href="https://linkedin.com" target="_blank">LinkedIn ↗</a>
+      </div>
+    </div>
+
+    <!-- SOCIAL MEDIA -->
+    <div class="member-card">
+      <div class="member-img-placeholder">DG</div>
+      <p class="member-role">Head of Marketing</p>
+      <h3 class="member-name">Diya Gupta</h3>
+      <p class="member-bio">Runs the club's social media and newsletter. Makes finance accessible and engaging for all students.</p>
+      <div class="member-links">
+        <a href="https://linkedin.com" target="_blank">LinkedIn ↗</a>
+      </div>
     </div>
 
   </div>
+</section>
 
-  <!-- Stats -->
-  <div class="stats">
-    <div class="stat">
-      <span class="stat-num">100+</span>
-      <span class="stat-desc">Members</span>
-    </div>
-    <div class="stat">
-      <span class="stat-num">20+</span>
-      <span class="stat-desc">Events / Year</span>
-    </div>
-    <div class="stat">
-      <span class="stat-num">∞</span>
-      <span class="stat-desc">Market Debates</span>
-    </div>
+
+<!-- ══ ABOUT ══ -->
+<section id="about">
+  <div class="about-text">
+    <p class="section-eyebrow">About</p>
+    <h2 class="section-title">Why we exist</h2>
+    <p class="section-sub">Wall Street Society is a student-led finance club dedicated to building real-world market knowledge through research, debate, and community.</p>
+    <ul class="about-list">
+      <li>Original research papers on Indian and global markets</li>
+      <li>Weekly market discussion sessions and stock pitches</li>
+      <li>Guest lectures from industry professionals</li>
+      <li>Case competitions and portfolio simulations</li>
+      <li>A network of finance-minded students across batches</li>
+    </ul>
   </div>
+  <div class="about-visual">
+    <p class="about-quote">"The stock market is a device for transferring money from the impatient to the patient."</p>
+    <p class="about-quote-attr">— Warren Buffett</p>
+  </div>
+</section>
 
-  <a class="cta" href="mailto:contact@wallstreetsociety.in">Join the Society</a>
+
+<!-- ══ CONTACT ══ -->
+<section id="contact">
+  <p class="section-eyebrow">Contact</p>
+  <h2 class="section-title">Get involved</h2>
+  <!-- REPLACE with your actual email -->
+  <p class="section-sub">Interested in joining, collaborating, or submitting a research paper? Reach out to us directly.</p>
+  <a class="contact-email" href="mailto:contact@wallstreetsociety.in">contact@wallstreetsociety.in</a>
+  <a href="mailto:contact@wallstreetsociety.in" class="btn-primary">Send us a message</a>
+</section>
+
+
+<!-- ══ FOOTER ══ -->
+<footer>
+  <span>© 2025 Wall Street Society</span>
+  <span>wallstreetsociety.in</span>
+</footer>
 
 </body>
 </html>
